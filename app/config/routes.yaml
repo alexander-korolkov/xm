@@ -1,0 +1,3 @@
+api_v1_users:
+    path: /api/v1/historical-quotes-endpoint
+    controller: App\Application\v1\Controller\HistoricalQuotesController::historicalQuotesEndpoint

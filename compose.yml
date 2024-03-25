@@ -1,0 +1,85 @@
+networks:
+  server:
+    driver: bridge
+  xm.dev:
+    external: true
+
+
+services:
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./app/:/var/www/
+      - ./nginx/:/etc/nginx/conf.d/
+      - ./log/nginx/:/var/log/nginx/
+    networks:
+      - server
+      - xm.dev
+
+  php:
+    container_name: php
+    build: ./php/
+    volumes:
+      - ./app/:/var/www/
+    networks:
+      - server
+      - xm.dev
+
+  worker:
+    container_name: worker
+    build: ./php/
+    volumes:
+      - ./app/:/var/www/
+#    command: php /var/www/bin/console messenger:consume async --time-limit=3600
+    depends_on:
+      - php
+  #  restart: on-failure
+    networks:
+      - server
+      - xm.dev
+
+#  mysql:
+#    container_name: mysql
+#    image: mysql
+#    command: --default-authentication-plugin=mysql_native_password
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: qwerty
+#    ports:
+#      - 3306:3306
+#    networks:
+#      - server
+#      - xm.dev
+#    volumes:
+#      - db_volume:/var/lib/mysql/
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - server
+      - xm.dev
+
+  ###> symfony/mailer ###
+  mailer:
+    image: axllent/mailpit
+    ports:
+      - "1025"
+      - "8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - server
+      - xm.dev
+  ###< symfony/mailer ###
+
+volumes:
+  db_volume:
+    driver: local

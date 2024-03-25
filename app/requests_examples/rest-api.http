@@ -1,0 +1,10 @@
+### Send POST request with json body
+POST http://localhost/api/v1/historical-quotes-endpoint
+Content-Type: application/json
+
+{
+  "companySymbol": "AAPL",
+  "startDate": "2022-01-01",
+  "endDate": "2023-01-01",
+  "email": "alexkorolkov1@gmail.com"
+}

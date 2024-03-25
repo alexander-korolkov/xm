@@ -1,0 +1,123 @@
+openapi: 3.0.0
+info:
+  title: Historical Quotes API
+  version: 1.0.0
+paths:
+  /api/v1/historical-quotes-endpoint:
+    get:
+      summary: Retrieve historical quotes data
+      parameters:
+        - in: query
+          name: companySymbol
+          required: true
+          schema:
+            type: string
+          description: Company's symbol
+        - in: query
+          name: startDate
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Start date in YYYY-MM-DD format
+        - in: query
+          name: endDate
+          required: true
+          schema:
+            type: string
+            format: date
+          description: End date in YYYY-MM-DD format
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+            format: email
+          description: Email to send the results to
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: date
+                        open:
+                          type: number
+                        high:
+                          type: number
+                        low:
+                          type: number
+                        close:
+                          type: number
+                        volume:
+                          type: integer
+                additionalProperties: false
+        '400':
+          description: Bad request error
+    post:
+      summary: Retrieve historical quotes data through POST
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                companySymbol:
+                  type: string
+                startDate:
+                  type: string
+                  format: date
+                endDate:
+                  type: string
+                  format: date
+                email:
+                  type: string
+                  format: email
+              required:
+                - companySymbol
+                - startDate
+                - endDate
+                - email
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulResponse'
+        '400':
+          description: Bad request error
+components:
+  schemas:
+    SuccessfulResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              open:
+                type: number
+              high:
+                type: number
+              low:
+                type: number
+              close:
+                type: number
+              volume:
+                type: integer
+      additionalProperties: false
