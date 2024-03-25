@@ -108,3 +108,6 @@ This app store some cache data in Redis
 # Emails
 Emails should be sending by asynchronously through Messenger tool and gmail transport. 
 Please do not spam anyone with my credentials))
+
+# Note 
+I removed "/app/var/" and "/app/vendor/" folders from .gitignore, just to easy run. You don't need to run `composer up`, but you can do it.
