@@ -61,7 +61,7 @@ Description: Retrieve historical data by Date Range.
 
 Example of request:
 
-`GET /`
+`GET http://localhost/api/v1/historical-quotes-endpoint?companySymbol=AAPL&startDate=2022-01-01&endDate=2023-01-31&email=alexkorolkov1@gmail.com`
 
 Example of successful response:
 
